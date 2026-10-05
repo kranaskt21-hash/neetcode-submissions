@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<int> maxProduct(vector<int>& nums) {
+        int currMax = nums[0];
+        int currMin = nums[0];
+
+        int maxi = nums[0];
+
+        int currMaxStart = 0;
+        int currMinStart = 0;
+
+        int ansStart = 0;
+        int ansEnd = 0;
+
+        for (int i = 1; i < nums.size(); i++) {
+
+            if (nums[i] < 0) {
+                swap(currMax, currMin);
+                swap(currMaxStart, currMinStart);
+            }
+
+            // Decide whether to start a new subarray
+            // or extend the previous one
+            if (nums[i] > currMax * nums[i]) {
+                currMax = nums[i];
+                currMaxStart = i;
+            } else {
+                currMax = currMax * nums[i];
+            }
+
+            if (nums[i] < currMin * nums[i]) {
+                currMin = nums[i];
+                currMinStart = i;
+            } else {
+                currMin = currMin * nums[i];
+            }
+
+            // Update overall maximum
+            if (currMax > maxi) {
+                maxi = currMax;
+                ansStart = currMaxStart;
+                ansEnd = i;
+            }
+        }
+
+        return vector<int>(nums.begin() + ansStart,
+                           nums.begin() + ansEnd + 1);
+    }
+};
